@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 from datetime import datetime, timedelta
 from . import models, schemas, crud, database
 import os
+import hashlib
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -18,10 +19,10 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 def verify_password(plain_pw, hashed_pw):
-    return pwd_context.verify(plain_pw.encode('utf-8')[:72], hashed_pw)
+    return pwd_context.verify(hashlib.sha256(plain_pw.encode('utf-8')).hexdigest(), hashed_pw)
 
 def get_password_hash(password):
-    encoded = password.encode('utf-8')[:72]
+    encoded = hashlib.sha256(password.encode('utf-8')).hexdigest()
     return pwd_context.hash(encoded)
 
 

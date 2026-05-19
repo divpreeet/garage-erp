@@ -144,8 +144,8 @@ class AdminUserCreate(BaseModel):
 
     @validator("password")
     def password_max_length(cls, v):
-        if len(v) > 72:
-            raise ValueError("password cannot exceed 72 characters")
+        if len(v) > 255:
+            raise ValueError("password cannot exceed 255 characters")
         return v
 
 class AdminUserOut(BaseModel):
